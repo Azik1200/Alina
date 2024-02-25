@@ -1,58 +1,83 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div class="client-form">
+    <!-- Личные данные -->
+    <div class="section">
+      <h2>Личные данные</h2>
+      <input v-model="surname" type="text" placeholder="Фамилия">
+      <!-- Остальные поля для имени, отчества, даты рождения, номера телефона, пола и группы клиентов -->
+      <!-- Добавьте здесь валидацию для каждого поля -->
+    </div>
+
+    <!-- Адрес -->
+    <div class="section">
+      <h2>Адрес</h2>
+      <input v-model="surname" type="text" placeholder="Адрес">
+    </div>
+
+    <!-- Паспорт -->
+    <div class="section">
+      <h2>Паспорт</h2>
+      <input v-model="surname" type="text" placeholder="Паспорт">
+    </div>
+
+    <!-- Опция не отправлять СМС -->
+    <div class="section">
+      <input type="checkbox" v-model="noSms"> Не отправлять СМС
+    </div>
+
+    <!-- Кнопка для отправки формы -->
+    <button @click="submitForm">Создать клиента</button>
+
+    <!-- Вывод сообщения об успешном создании клиента или ошибок -->
+    <div v-if="successMessage">{{ successMessage }}</div>
+    <div v-if="errorMessage">{{ errorMessage }}</div>
   </div>
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators';
+
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  data() {
+    return {
+      // Здесь храните данные формы
+      surname: '',
+      // Добавьте здесь остальные поля формы
+      noSms: false,
+      successMessage: '',
+      errorMessage: ''
+    };
+  },
+  validations: {
+    surname: {
+      required,
+      // Добавьте другие правила валидации для каждого поля
+    },
+    // Добавьте здесь валидацию для остальных полей формы
+  },
+  methods: {
+    submitForm() {
+      // Проверка валидации перед отправкой формы
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        // Отправка данных формы
+        // Показать сообщение об успешном создании клиента
+        this.successMessage = 'Новый клиент успешно создан!';
+      } else {
+        // Показать сообщение об ошибке валидации
+        this.errorMessage = 'Пожалуйста, заполните форму корректно.';
+      }
+    }
   }
-}
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style lang="scss">
+.client-form {
+  // Стили для формы
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+
+.section {
+  // Стили для секций формы
 }
 </style>
